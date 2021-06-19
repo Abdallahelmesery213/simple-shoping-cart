@@ -1,7 +1,12 @@
 import './App.css';
 import React, { Component } from 'react'
 import ShopingCart from './components/ShopingCart'
-import Navbar from './components/Navbar';
+import Navbarr from './components/Navbar';
+import {Route,Redirect} from 'react-router-dom'
+import Home from './components/Home';
+import About from './components/About';
+import Contact from './components/Contact';
+import notFound from './components/notFound'
 class App extends Component {
   state = { 
     products:[
@@ -41,9 +46,17 @@ decrementButton = (product) => {
  render () {
   return (
     <div className="App">
-        <Navbar productCount={this.state.products.length}/>
+        <Navbarr productCount={this.state.products.length}/>
         <div className="container">
-          <ShopingCart products={this.state.products} handeleButton={this.handeleButton} handleDlete={this.handleDlete} decrementButton={this.decrementButton}/>
+          {/* <ShopingCart products={this.state.products} handeleButton={this.handeleButton} handleDlete={this.handleDlete} decrementButton={this.decrementButton}/> */}
+          
+            <Route path='/' exact component={Home} />
+            <Route path='/About' component={About} />
+            <Route path='/Contact' component={Contact} />
+            <Route path='/cart' render={()=> <ShopingCart products={this.state.products} handeleButton={this.handeleButton} handleDlete={this.handleDlete} decrementButton={this.decrementButton}/>} />
+            <Route path='/notFound' component={notFound}/>
+            <Redirect to='/notFound' />
+          
         </div>
     </div>
   );
