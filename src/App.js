@@ -4,21 +4,34 @@ import ShopingCart from './components/ShopingCart'
 import Navbarr from './components/Navbar';
 import {Route,Redirect} from 'react-router-dom'
 import Home from './components/Home';
-import About from './components/About';
-import Contact from './components/Contact';
+// import About from './components/About';
+// import Contact from './components/Contact';
 import notFound from './components/notFound'
+import Menu from './components/Menu'
 class App extends Component {
   state = { 
     products:[
-        {id:1, name:'Burger',count:15},
-        {id:2, name:'Rice',count:5},
-        {id:3, name:'Meat',count:9}
+        {id:1, name:'Burger',count:1, price:30 , isInCart:false},
+        {id:2, name:'Fries' ,count:1, price:20 , isInCart:false},
+        {id:3, name:'Cola',count:1, price:10 , isInCart:false}
+        
     ]
  }
- handleDlete= (product)=> {
-     const newProducts = this.state.products.filter(p => p.id !== product.id);
-     this.setState({products:newProducts})
- }
+ handeleInCartChange = (product) => {
+  console.log("clicked");
+  // clone
+  const products = [...this.state.products];
+  const index = products.indexOf(product);
+  products[index] =  {...products[index]};
+  // edit
+  products[index].isInCart = !products[index].isInCart
+  // setState
+  this.setState({products})
+}
+//  handleDlete= (product)=> {
+//      const newProducts = this.state.products.filter(p => p.id !== product.id);
+//      this.setState({products:newProducts})
+//  }
  // increment function
  handeleButton = (product) => {
   console.log("clicked");
@@ -48,14 +61,25 @@ decrementButton = (product) => {
     <div className="App">
         <Navbarr productCount={this.state.products.length}/>
         <div className="container">
-          {/* <ShopingCart products={this.state.products} handeleButton={this.handeleButton} handleDlete={this.handleDlete} decrementButton={this.decrementButton}/> */}
-          
-            <Route path='/' exact component={Home} />
-            <Route path='/About' component={About} />
-            <Route path='/Contact' component={Contact} />
-            <Route path='/cart' render={()=> <ShopingCart products={this.state.products} handeleButton={this.handeleButton} handleDlete={this.handleDlete} decrementButton={this.decrementButton}/>} />
+            <Route path='/home' component={Home} />
             <Route path='/notFound' component={notFound}/>
-            <Redirect to='/notFound' />
+            {/* <Redirect to='/notFound' /> */}
+            <Route path='/menu' render={ props => (
+              <Menu 
+                {...props} 
+                products={this.state.products} 
+                onClick={this.handeleInCartChange}
+            /> )} />
+
+            <Route path='/cart' 
+              render={props=> (
+                <ShopingCart 
+                  products={this.state.products.filter(p => p.isInCart)} 
+                  handeleButton={this.handeleButton} 
+                  handleDlete={this.handleDlete} 
+                  decrementButton={this.decrementButton}
+                  /> )} />
+
           
         </div>
     </div>

@@ -8,7 +8,7 @@ class ShopingCart extends Component {
                 <h2>shoping cart</h2>
                 <br />
                 {this.props.products.map(product => (
-                    <Product key={product.id} product={product} handleDlete={this.props.handleDlete} handeleButton={this.props.handeleButton} decrementButton={this.props.decrementButton}/>
+                    <Product key={product.id} product={product}  handeleButton={this.props.handeleButton} decrementButton={this.props.decrementButton}/>
                 ))}
             </div>
          );
